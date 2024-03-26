@@ -12,6 +12,7 @@ public class UserDao {
 	@Autowired
 	private SqlSession sqlSession; // mybatis에 xml이 있어야 import됨
 
+	// 로그인
 	public UserVo userSelectByIdPw(UserVo userVo) {
 		System.out.println("UserDao.userSelectByIdPw()");
 
@@ -20,4 +21,22 @@ public class UserDao {
 
 		return authUser;
 	}
+
+	// 회원정보수정 폼(조회 no)
+	public UserVo userSelectOneByNo(int no) {
+		System.out.println("UserDao.userSelectOneByNo()");
+
+		UserVo userVo = sqlSession.selectOne("user.selectOneByNo", no);
+		return userVo;
+	}
+
+	// 회원수정
+	public int userUpdate(UserVo userVo) {
+		System.out.println("UserDao.userUpdate()");
+
+		int count = sqlSession.update("user.update", userVo);
+
+		return count;
+	}
+
 }
