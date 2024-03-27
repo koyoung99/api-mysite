@@ -20,6 +20,16 @@ public class UserService {
 
 		return authUser;
 	}
+	
+	// 회원가입
+	public int exeJoin(UserVo userVo) {
+		System.out.println("UserService.exeJoin()");
+		
+		int count = userDao.userInsert(userVo);
+		
+		return count;
+	}
+	
 
 	// 회원수정폼(1명 데이터 가져오기)
 	public UserVo exeModifyForm(int no) {

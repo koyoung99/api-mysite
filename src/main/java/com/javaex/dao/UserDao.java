@@ -21,6 +21,16 @@ public class UserDao {
 
 		return authUser;
 	}
+	
+	// 회원가입
+	public int userInsert(UserVo userVo) {
+		System.out.println("UserDao.exeJoin()");
+		
+		int count=sqlSession.insert("user.insert",userVo);
+		
+		return count;
+	}
+	
 
 	// 회원정보수정 폼(조회 no)
 	public UserVo userSelectOneByNo(int no) {
@@ -33,9 +43,10 @@ public class UserDao {
 	// 회원수정
 	public int userUpdate(UserVo userVo) {
 		System.out.println("UserDao.userUpdate()");
-
+		System.out.println(userVo);
 		int count = sqlSession.update("user.update", userVo);
 
+		
 		return count;
 	}
 

@@ -19,7 +19,7 @@
 	
 	<insert id="insert" parameterType="com.javaex.vo.UserVo">
 	<![CDATA[
-	 	insert into users values(null, #{id}, #{password}, #{name},#{gender});
+	 	insert into users values(null,#{id}, #{password}, #{name},#{gender});
 	 ]]>
 	</insert>
 	

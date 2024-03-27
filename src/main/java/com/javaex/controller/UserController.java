@@ -40,6 +40,18 @@ public class UserController {
 		}
 
 	}
+	
+	//회원가입
+	@PostMapping("/api/users/join")
+	public JsonResult join(@RequestBody UserVo userVo) {
+		System.out.println("UserController.join()");
+		
+		int count = userService.exeJoin(userVo);
+		
+		return JsonResult.success(count);
+	}
+	
+	
 
 	// 회원정보 수정폼(1명 데이터가져오기)
 	@GetMapping("/api/users/modify")
