@@ -42,7 +42,8 @@ public class BoardDao {
 		System.out.println("BoardDao.selectOne()");
 		
 		BoardVo boardVo = sqlSession.selectOne("board.selectOne", no);
-
+		System.out.println(boardVo);
+		
 		return boardVo;
 	}
 	

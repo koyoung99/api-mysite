@@ -4,11 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.javaex.service.BoardService;
@@ -31,67 +32,55 @@ public class BoardController {
 		return JsonResult.success(bList);
 	}
 
-	// 삭제
-	@RequestMapping(value = "/board/delete", method = { RequestMethod.GET, RequestMethod.POST })
-	public String delete(@RequestParam("no") int no) {
-		System.out.println("BoardController.delete()");
-
-		boardService.exeDelete(no);
-
-		return "redirect:/board/list";
-	}
-
-	// 등록폼
-	@RequestMapping(value = "/board/writeform", method = { RequestMethod.GET, RequestMethod.POST })
-	public String writeForm() {
-		System.out.println("BoardController.writeForm()");
-
-		return "board/writeForm";
-	}
-
-	// 등록
-	@RequestMapping(value = "/board/write", method = { RequestMethod.GET, RequestMethod.POST })
-	public String write(@ModelAttribute BoardVo boardVo) {
-		System.out.println("BoardController.write()");
-
-		boardService.exeInsert(boardVo);
-
-		return "redirect:/board/list";
-	}
-
 	// 읽기
-	@RequestMapping(value = "/board/read", method = { RequestMethod.GET, RequestMethod.POST })
-	public String read(@RequestParam(value = "no") int no, Model model) {
+	@GetMapping(value = "/api/board/read/{no}")
+	public JsonResult read(@PathVariable(value = "no") int no) {
 		System.out.println("BoardController.read()");
 
-		BoardVo boardVo=boardService.exeSelectOne(no);
-		
-		model.addAttribute("boardVo", boardVo );
-		
-		return "board/read";
+		BoardVo boardVo = boardService.exeSelectOne(no);
+
+		return JsonResult.success(boardVo);
 	}
+
+	// 삭제
+	@DeleteMapping(value = "/api/board/delete/{no}")
+	public JsonResult delete(@PathVariable(value = "no") int no) {
+		System.out.println("BoardController.delete()");
+
+		int count=boardService.exeDelete(no);
+
+		return JsonResult.success(count);
+	}
+
 	
+	// 등록
+	@PostMapping(value = "/api/board/add")
+	public JsonResult write(@RequestBody BoardVo boardVo) {
+		System.out.println("BoardController.write()");
+
+		int count=boardService.exeInsert(boardVo);
+
+		return JsonResult.success(count);
+	}
+
 	// 수정폼
-	@RequestMapping(value = "/board/modifyform", method = { RequestMethod.GET, RequestMethod.POST })
-	public String modifyForm(@RequestParam(value = "no") int no, Model model) {
+	@GetMapping(value = "/api/board/modify/{no}")
+	public JsonResult modifyForm(@PathVariable(value = "no") int no) {
 		System.out.println("BoardController.modifyForm()");
 
-		BoardVo boardVo=boardService.exeSelectOne(no);
-		model.addAttribute("boardVo",boardVo);
-		
-		return "board/modifyForm";
-	}
-	
-	// 수정
-	@RequestMapping(value = "/board/modify", method = { RequestMethod.GET, RequestMethod.POST })
-	public String modify(@ModelAttribute BoardVo boardVo) {
-		System.out.println("BoardController.modify()");
-		
-		boardService.exeModify(boardVo);
+		BoardVo boardVo = boardService.exeSelectOne(no);
 		System.out.println(boardVo);
-		
-		return "redirect:/board/list";
+		return JsonResult.success(boardVo);
 	}
-	
+
+	// 수정
+	@PutMapping(value = "/api/board/modify")
+	public JsonResult modify(@RequestBody BoardVo boardVo) {
+		System.out.println("BoardController.modify()");
+
+		int count=boardService.exeModify(boardVo);
+
+		return JsonResult.success(count);
+	}
 
 }
